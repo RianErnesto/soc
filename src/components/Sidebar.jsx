@@ -8,7 +8,7 @@ const menuItems = [
   { id: 'questoes', icon: '❓', label: 'Questões' },
   { id: 'simulado', icon: '🔥', label: 'Simulado' },
   { id: 'caderno', icon: '📓', label: 'Caderno de Erros' },
-  { id: 'flashcards', icon: '🃏', label: 'Flashcards' },
+  { id: 'flashcards', icon: '📨', label: 'Flashcards' },
   { id: 'resumos', icon: '📝', label: 'Resumos' },
   { id: 'chat', icon: '💬', label: 'Tira-Dúvidas' },
   { id: 'desempenho', icon: '📈', label: 'Desempenho' },
