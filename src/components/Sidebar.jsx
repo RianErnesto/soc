@@ -1,6 +1,6 @@
-import React from 'react';
+import { useState } from 'react';
 
-const menuItems = [
+export const menuItems = [
   { id: 'dashboard', icon: '📊', label: 'Dashboard' },
   { id: 'editais', icon: '📋', label: 'Editais' },
   { id: 'provas', icon: '✍🏻', label: 'Minhas Provas' },
@@ -18,6 +18,8 @@ const menuItems = [
 ];
 
 export default function Sidebar({ active, onSelect, collapsed, onToggle }) {
+  const [logoHovered, setLogoHovered] = useState(false);
+
   return (
     <div style={{
       position: 'fixed',
@@ -43,7 +45,25 @@ export default function Sidebar({ active, onSelect, collapsed, onToggle }) {
         minHeight: '72px',
       }}>
         {!collapsed && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            onClick={() => onSelect('dashboard')}
+            onMouseEnter={() => setLogoHovered(true)}
+            onMouseLeave={() => setLogoHovered(false)}
+            title="Ir para o Dashboard"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              background: logoHovered ? 'rgba(79, 125, 249, 0.08)' : 'transparent',
+              border: 'none',
+              borderRadius: '10px',
+              padding: '6px 8px',
+              margin: '-6px -8px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              transform: logoHovered ? 'translateY(-1px)' : 'none',
+            }}
+          >
             <div style={{
               width: '36px',
               height: '36px',
@@ -53,14 +73,17 @@ export default function Sidebar({ active, onSelect, collapsed, onToggle }) {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '18px',
+              transition: 'all 0.3s ease',
+              transform: logoHovered ? 'scale(1.1) rotate(-6deg)' : 'scale(1) rotate(0deg)',
+              boxShadow: logoHovered ? '0 6px 18px rgba(79, 125, 249, 0.45)' : 'none',
             }}>📚</div>
-            <div>
+            <div style={{ textAlign: 'left' }}>
               <div style={{ fontWeight: 800, fontSize: '15px', background: 'var(--gradient-1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 SOC
               </div>
               <div style={{ fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '2px' }}>CONCURSOS</div>
             </div>
-          </div>
+          </button>
         )}
         <button
           onClick={onToggle}

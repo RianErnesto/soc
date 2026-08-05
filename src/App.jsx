@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './index.css';
 import Sidebar from './components/Sidebar';
 import Dashboard from './modules/Dashboard';
@@ -19,16 +19,24 @@ import PomodoroTimer from './components/PomodoroTimer';
 import BuscaGlobal from './components/BuscaGlobal';
 import { DataProvider, useData } from './context/DataContext';
 import { aplicarTema } from './utils/temas';
+import { menuItems } from './components/Sidebar';
 
 function AppContent() {
   const [activeModule, setActiveModule] = useState('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { data } = useData();
 
+  function changePageTitleAccordingToActiveModule() {
+    const activeItem = menuItems.find(item => item.id === activeModule);
+    document.title = activeItem ? `SOC | ${activeItem.label}` : 'SOC';
+  }
+
   // 🎨 Aplica o tema sempre que as configurações mudarem
   useEffect(() => {
     aplicarTema(data.configuracoes);
   }, [data.configuracoes]);
+
+  useEffect(changePageTitleAccordingToActiveModule, [activeModule]);
 
   const renderModule = () => {
     switch (activeModule) {
