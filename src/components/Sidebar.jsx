@@ -31,7 +31,7 @@ export default function Sidebar({ active, onSelect, collapsed, onToggle }) {
       zIndex: 1000,
       display: 'flex',
       flexDirection: 'column',
-      overflow: 'hidden',
+      overflowY: 'scroll',
     }}>
       {/* Logo */}
       <div style={{
