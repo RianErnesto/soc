@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import BuscaGlobal from './BuscaGlobal';
 
 export const menuItems = [
   { id: 'dashboard', icon: '📊', label: 'Dashboard' },
@@ -40,68 +41,75 @@ export default function Sidebar({ active, onSelect, collapsed, onToggle }) {
         padding: collapsed ? '20px 10px' : '24px 20px',
         borderBottom: '1px solid var(--border-color)',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: collapsed ? 'center' : 'space-between',
-        minHeight: '72px',
+        flexDirection: 'column',
+        gap: collapsed ? '12px' : '14px',
       }}>
-        {!collapsed && (
-          <button
-            onClick={() => onSelect('dashboard')}
-            onMouseEnter={() => setLogoHovered(true)}
-            onMouseLeave={() => setLogoHovered(false)}
-            title="Ir para o Dashboard"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              background: logoHovered ? 'rgba(79, 125, 249, 0.08)' : 'transparent',
-              border: 'none',
-              borderRadius: '10px',
-              padding: '6px 8px',
-              margin: '-6px -8px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              transform: logoHovered ? 'translateY(-1px)' : 'none',
-            }}
-          >
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
-              background: 'var(--gradient-1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '18px',
-              transition: 'all 0.3s ease',
-              transform: logoHovered ? 'scale(1.1) rotate(-6deg)' : 'scale(1) rotate(0deg)',
-              boxShadow: logoHovered ? '0 6px 18px rgba(79, 125, 249, 0.45)' : 'none',
-            }}>📚</div>
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ fontWeight: 800, fontSize: '15px', background: 'var(--gradient-1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                SOC
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'space-between',
+        }}>
+          {!collapsed && (
+            <button
+              onClick={() => onSelect('dashboard')}
+              onMouseEnter={() => setLogoHovered(true)}
+              onMouseLeave={() => setLogoHovered(false)}
+              title="Ir para o Dashboard"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                background: logoHovered ? 'rgba(79, 125, 249, 0.08)' : 'transparent',
+                border: 'none',
+                borderRadius: '10px',
+                padding: '6px 8px',
+                margin: '-6px -8px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                transform: logoHovered ? 'translateY(-1px)' : 'none',
+              }}
+            >
+              <div style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                background: 'var(--gradient-1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px',
+                transition: 'all 0.3s ease',
+                transform: logoHovered ? 'scale(1.1) rotate(-6deg)' : 'scale(1) rotate(0deg)',
+                boxShadow: logoHovered ? '0 6px 18px rgba(79, 125, 249, 0.45)' : 'none',
+              }}>📚</div>
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontWeight: 800, fontSize: '15px', background: 'var(--gradient-1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  SOC
+                </div>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '2px' }}>CONCURSOS</div>
               </div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '2px' }}>CONCURSOS</div>
-            </div>
+            </button>
+          )}
+          <button
+            onClick={onToggle}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--text-secondary)',
+              cursor: 'pointer',
+              fontSize: '18px',
+              padding: '4px',
+              borderRadius: '6px',
+              transition: 'all 0.2s',
+            }}
+            onMouseOver={e => e.currentTarget.style.color = 'var(--accent-blue)'}
+            onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+          >
+            {collapsed ? '▶' : '◀'}
           </button>
-        )}
-        <button
-          onClick={onToggle}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--text-secondary)',
-            cursor: 'pointer',
-            fontSize: '18px',
-            padding: '4px',
-            borderRadius: '6px',
-            transition: 'all 0.2s',
-          }}
-          onMouseOver={e => e.currentTarget.style.color = 'var(--accent-blue)'}
-          onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'}
-        >
-          {collapsed ? '▶' : '◀'}
-        </button>
+        </div>
+
+        <BuscaGlobal onNavigate={onSelect} collapsed={collapsed} />
       </div>
 
       {/* Menu Items */}

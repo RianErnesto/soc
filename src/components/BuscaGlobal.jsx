@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useData } from '../context/DataContext';
 
-export default function BuscaGlobal({ onNavigate }) {
+export default function BuscaGlobal({ onNavigate, collapsed }) {
   const { data } = useData();
   const [aberto, setAberto] = useState(false);
   const [termo, setTermo] = useState('');
@@ -216,50 +216,80 @@ export default function BuscaGlobal({ onNavigate }) {
 
   return (
     <>
-      {/* Botão da busca (fica no canto superior direito) */}
-      <button
-        onClick={() => setAberto(true)}
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '24px',
-          zIndex: 500,
-          padding: '10px 16px',
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border-color)',
-          borderRadius: '10px',
-          color: 'var(--text-secondary)',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          fontSize: '13px',
-          fontWeight: 500,
-          transition: 'all 0.2s',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-        }}
-        onMouseOver={e => {
-          e.currentTarget.style.borderColor = 'var(--accent-blue)';
-          e.currentTarget.style.color = 'var(--accent-blue)';
-        }}
-        onMouseOut={e => {
-          e.currentTarget.style.borderColor = 'var(--border-color)';
-          e.currentTarget.style.color = 'var(--text-secondary)';
-        }}
-        title="Buscar em tudo (Ctrl+K)"
-      >
-        <span style={{ fontSize: '16px' }}>🔍</span>
-        <span>Buscar...</span>
-        <span style={{ 
-          padding: '2px 8px', 
-          background: 'rgba(255,255,255,0.05)', 
-          borderRadius: '4px', 
-          fontSize: '11px',
-          border: '1px solid var(--border-color)',
-        }}>
-          Ctrl+K
-        </span>
-      </button>
+      {/* Gatilho da busca — vive dentro da Sidebar, não mais flutuante */}
+      {collapsed ? (
+        <button
+          onClick={() => setAberto(true)}
+          title="Buscar (Ctrl+K)"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '10px',
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '10px',
+            color: 'var(--text-muted)',
+            cursor: 'pointer',
+            fontSize: '16px',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseOver={e => {
+            e.currentTarget.style.borderColor = 'var(--accent-blue)';
+            e.currentTarget.style.color = 'var(--accent-blue)';
+            e.currentTarget.style.background = 'rgba(79, 125, 249, 0.06)';
+          }}
+          onMouseOut={e => {
+            e.currentTarget.style.borderColor = 'var(--border-color)';
+            e.currentTarget.style.color = 'var(--text-muted)';
+            e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+          }}
+        >
+          🔍
+        </button>
+      ) : (
+        <button
+          onClick={() => setAberto(true)}
+          title="Buscar em tudo (Ctrl+K)"
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '9px 12px',
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '10px',
+            color: 'var(--text-muted)',
+            cursor: 'pointer',
+            fontSize: '13px',
+            fontWeight: 500,
+            transition: 'all 0.2s ease',
+          }}
+          onMouseOver={e => {
+            e.currentTarget.style.borderColor = 'var(--accent-blue)';
+            e.currentTarget.style.color = 'var(--accent-blue)';
+            e.currentTarget.style.background = 'rgba(79, 125, 249, 0.06)';
+          }}
+          onMouseOut={e => {
+            e.currentTarget.style.borderColor = 'var(--border-color)';
+            e.currentTarget.style.color = 'var(--text-muted)';
+            e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+          }}
+        >
+          <span style={{ fontSize: '14px' }}>🔍</span>
+          <span style={{ flex: 1, textAlign: 'left' }}>Buscar...</span>
+          <span style={{
+            padding: '1px 6px',
+            background: 'rgba(255,255,255,0.04)',
+            borderRadius: '4px',
+            fontSize: '10px',
+            border: '1px solid var(--border-color)',
+          }}>
+            Ctrl+K
+          </span>
+        </button>
+      )}
 
       {/* Modal de busca */}
       {aberto && (

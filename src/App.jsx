@@ -16,7 +16,6 @@ import Personalizacao from './modules/Personalizacao';
 import ChatProfessor from './modules/ChatProfessor';
 import MinhasProvas from './modules/MinhasProvas';
 import PomodoroTimer from './components/PomodoroTimer';
-import BuscaGlobal from './components/BuscaGlobal';
 import { DataProvider, useData } from './context/DataContext';
 import { aplicarTema } from './utils/temas';
 import { menuItems } from './components/Sidebar';
@@ -74,7 +73,6 @@ function AppContent() {
         {renderModule()}
       </main>
       <PomodoroTimer />
-      <BuscaGlobal onNavigate={setActiveModule} />
     </div>
   );
 }
