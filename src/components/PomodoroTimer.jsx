@@ -21,6 +21,8 @@ export default function PomodoroTimer() {
   
   const intervalRef = useRef(null);
   const audioRef = useRef(null);
+  const tempoFinalRef = useRef(null); // timestamp (Date.now()) em que o cronômetro deve chegar a zero
+  const finalizarTimerRef = useRef(null);
 
   // Cria áudio de notificação (beep)
   useEffect(() => {
@@ -97,22 +99,41 @@ export default function PomodoroTimer() {
     }
   }, [modo, ciclos, usaCustom, tempoPersonalizado, notificar, registrarPomodoro]);
 
-  // Cronômetro
   useEffect(() => {
-    if (rodando && tempoRestante > 0) {
-      intervalRef.current = setInterval(() => {
-        setTempoRestante(prev => {
-          if (prev <= 1) {
-            clearInterval(intervalRef.current);
-            finalizarTimer();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(intervalRef.current);
-    }
-  }, [rodando, tempoRestante, finalizarTimer]);
+    finalizarTimerRef.current = finalizarTimer;
+  }, [finalizarTimer]);
+
+  useEffect(function cronometrarPomodoro() {
+    if (!rodando || tempoRestante <= 0) return;
+
+    tempoFinalRef.current = Date.now() + tempoRestante * 1000;
+
+    const verificarTempo = () => {
+      const restante = Math.round((tempoFinalRef.current - Date.now()) / 1000);
+      if (restante <= 0) {
+        clearInterval(intervalRef.current);
+        setTempoRestante(0);
+        finalizarTimerRef.current();
+      } else {
+        setTempoRestante(restante);
+      }
+    };
+
+    intervalRef.current = setInterval(verificarTempo, 1000);
+
+    // Quando a aba volta a ficar visível, o setInterval pode ter atrasado
+    // (throttling) — recalcula na hora em vez de esperar o próximo tick.
+    const aoMudarVisibilidade = () => {
+      if (document.visibilityState === 'visible') verificarTempo();
+    };
+    document.addEventListener('visibilitychange', aoMudarVisibilidade);
+
+    return () => {
+      clearInterval(intervalRef.current);
+      document.removeEventListener('visibilitychange', aoMudarVisibilidade);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rodando]);
 
   const iniciar = () => {
     // Pede permissão para notificações no primeiro uso

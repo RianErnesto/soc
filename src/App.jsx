@@ -26,17 +26,15 @@ function AppContent() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { data } = useData();
 
-  function changePageTitleAccordingToActiveModule() {
-    const activeItem = menuItems.find(item => item.id === activeModule);
-    document.title = activeItem ? `SOC | ${activeItem.label}` : 'SOC';
-  }
-
   // 🎨 Aplica o tema sempre que as configurações mudarem
   useEffect(() => {
     aplicarTema(data.configuracoes);
   }, [data.configuracoes]);
 
-  useEffect(changePageTitleAccordingToActiveModule, [activeModule]);
+  useEffect(function changePageTitleAccordingToActiveModule() {
+    const activeItem = menuItems.find(item => item.id === activeModule);
+    document.title = activeItem ? `SOC | ${activeItem.label}` : 'SOC';
+  }, [activeModule]);
 
   const renderModule = () => {
     switch (activeModule) {
